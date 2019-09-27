@@ -9,6 +9,9 @@ import android.widget.Button ;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
 import java.util.ArrayList;
 
 // Implements View.OnClickListener 是為了讓整個 MainActivity 去實作整個 onClick()
@@ -52,8 +55,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void SetInit() {
 
         // Assign Function 給 Button
-        Button sendButton =  (Button) findViewById(R.id.sendButton) ;
+        Button sendButton = (Button) findViewById(R.id.sendButton) ;
         sendButton.setOnClickListener(this) ;
+
+//        ListView listview = (ListView) findViewById(R.id.personList);
+
+
+        // Constraint 要設定成 Match Constraints 才行
+        ListView personList = (ListView) findViewById(R.id.personList) ;
+
+        //ListView 要顯示的內容
+        String[] str = {"新北市","台北市","台中市","台南市","高雄市","台中市","台南市","高雄市","台中市","台南市","高雄市"};
+
+//        System.out.println(str.length) ;
+
+        //android.R.layout.simple_list_item_1 為內建樣式，還有其他樣式可自行研究
+
+        ArrayAdapter listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, str) ;
+//        ArrayAdapter<ContactInfo> listAdapter = new ArrayAdapter<ContactInfo>(this, android.R.layout.simple_list_item_1, this.myTelephoneBook) ;
+
+        personList.setAdapter(listAdapter);
+        listAdapter.notifyDataSetChanged();
+
+//        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, str);
+//        listview.setAdapter(adapter);
+
+//        ListView personList = (ListView) findViewById(R.id.personList) ;
+
+
     }
 
     private void AddPersonToContactInfo() {
