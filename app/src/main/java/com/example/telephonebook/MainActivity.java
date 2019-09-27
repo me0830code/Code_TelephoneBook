@@ -1,18 +1,18 @@
-package com.example.telephonebook;
+package com.example.telephonebook ;
 
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity ;
+import android.os.Bundle ;
 
-import android.view.View;
+import android.view.View ;
 
 import android.widget.Button ;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.EditText ;
+import android.widget.Toast ;
 
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.ArrayAdapter ;
+import android.widget.ListView ;
 
-import java.util.ArrayList;
+import java.util.ArrayList ;
 
 // Implements View.OnClickListener 是為了讓整個 MainActivity 去實作整個 onClick()
 //
@@ -33,10 +33,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // 不同以往的 Array 需要宣告Size，在這邊類似於 Vector 的O bject
     private ArrayList<ContactInfo> myTelephoneBook = new ArrayList<ContactInfo>() ;
 
+    // ListView 的 Data Source
+    private ArrayAdapter listAdapter ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState) ;
+        setContentView(R.layout.activity_main) ;
 
         this.SetInit() ;
     }
@@ -58,31 +61,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button sendButton = (Button) findViewById(R.id.sendButton) ;
         sendButton.setOnClickListener(this) ;
 
-//        ListView listview = (ListView) findViewById(R.id.personList);
-
-
         // Constraint 要設定成 Match Constraints 才行
         ListView personList = (ListView) findViewById(R.id.personList) ;
 
-        //ListView 要顯示的內容
-        String[] str = {"新北市","台北市","台中市","台南市","高雄市","台中市","台南市","高雄市","台中市","台南市","高雄市"};
+        // 第三個參數是放ListView 要顯示的內容
+        this.listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, this.myTelephoneBook) ;
 
-//        System.out.println(str.length) ;
-
-        //android.R.layout.simple_list_item_1 為內建樣式，還有其他樣式可自行研究
-
-        ArrayAdapter listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, str) ;
-//        ArrayAdapter<ContactInfo> listAdapter = new ArrayAdapter<ContactInfo>(this, android.R.layout.simple_list_item_1, this.myTelephoneBook) ;
-
-        personList.setAdapter(listAdapter);
-        listAdapter.notifyDataSetChanged();
-
-//        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, str);
-//        listview.setAdapter(adapter);
-
-//        ListView personList = (ListView) findViewById(R.id.personList) ;
-
-
+        // 設定 ListView 的 Data Source
+        personList.setAdapter(this.listAdapter) ;
     }
 
     private void AddPersonToContactInfo() {
@@ -91,20 +77,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         EditText nameInputEditText = (EditText) findViewById(R.id.uNameInput) ;
         EditText phoneInputEditText = (EditText) findViewById(R.id.pNumInput) ;
 
-        if ( nameInputEditText.getText().toString().length() == 0 || phoneInputEditText.getText().toString().length() == 0 ){
+        if ( nameInputEditText.getText().toString().length() == 0 || phoneInputEditText.getText().toString().length() == 0 ) {
 
-            Toast.makeText(this, "您輸入的資料不完整，請重新再試！", Toast.LENGTH_LONG).show();
+            // final 用法就如同 constant，無法再更改變數的值
+            final String failLog = "您輸入的資料不完整，請重新再試！" ;
+            Toast.makeText(this, failLog, Toast.LENGTH_LONG).show() ;
         } else {
 
             String personName = nameInputEditText.getText().toString() ;
             String personPhoneNumber = phoneInputEditText.getText().toString() ;
 
             ContactInfo thisPerson = new ContactInfo() ;
-            thisPerson.SetUserName(personName);
-            thisPerson.SetPhoneNumber(personPhoneNumber);
+            thisPerson.init(personName, personPhoneNumber) ;
 
+            // 更新 Data Set
             this.myTelephoneBook.add(thisPerson) ;
-            Toast.makeText(this, "新增通訊錄成功！", Toast.LENGTH_LONG).show();
+
+            // 同時更新 ListView 中的 Data Source
+            this.listAdapter.notifyDataSetChanged() ;
+
+            // final 用法就如同 constant，無法再更改變數的值
+            final String successLog = "新增通訊錄成功！" + "\n" + "姓名 : " + personName + "\n" + "電話 : " + personPhoneNumber ;
+            Toast.makeText(this, successLog, Toast.LENGTH_LONG).show() ;
         }
     }
 

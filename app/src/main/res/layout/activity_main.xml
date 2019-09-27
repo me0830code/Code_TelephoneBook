@@ -25,8 +25,8 @@
         android:hint="@string/phoneNumHint"
 
         android:importantForAutofill="no"
-        android:inputType="textPersonName"
 
+        android:inputType="phone"
         app:layout_constraintBaseline_toBaselineOf="@id/pNum"
         app:layout_constraintEnd_toEndOf="@+id/uNameInput"
         app:layout_constraintStart_toStartOf="@+id/uNameInput" />
