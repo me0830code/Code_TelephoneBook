@@ -4,5 +4,5 @@
     <string name = "userNameHint" > 請輸入姓名 </string>
     <string name = "phoneNum" > 電話 </string>
     <string name = "phoneNumHint" > 請輸入電話 </string>
-    <string name = "sendButton" > 新增 </string>
+    <string name = "sendButton" > 新增聯絡人 </string>
 </resources>

@@ -8,18 +8,18 @@
 
     <Button
         android:id="@+id/sendButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:text="@string/sendButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.009"
-        app:layout_constraintStart_toEndOf="@+id/pNum"
+        app:layout_constraintEnd_toEndOf="@+id/pNumInput"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="@+id/pNumInput"
         app:layout_constraintTop_toBottomOf="@+id/pNumInput" />
 
     <EditText
         android:id="@+id/pNumInput"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/phoneNumHint"
@@ -27,48 +27,45 @@
         android:importantForAutofill="no"
         android:inputType="textPersonName"
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.234"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/uNameInput"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintBaseline_toBaselineOf="@id/pNum"
+        app:layout_constraintEnd_toEndOf="@+id/uNameInput"
+        app:layout_constraintStart_toStartOf="@+id/uNameInput" />
 
     <EditText
         android:id="@+id/uNameInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
+        android:layout_marginStart="30dp"
         android:ems="10"
-        android:hint="@string/userNameHint"
 
+        android:hint="@string/userNameHint"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.234"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBaseline_toBaselineOf="@id/uName"
+        app:layout_constraintStart_toEndOf="@+id/uName" />
 
     <TextView
         android:id="@+id/uName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
         android:text="@string/userName"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/uNameInput"
-        app:layout_constraintEnd_toStartOf="@+id/uNameInput"
-        app:layout_constraintHorizontal_bias="0.75"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/pNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
+        android:layout_marginTop="30dp"
         android:text="@string/phoneNum"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/pNumInput"
-        app:layout_constraintEnd_toStartOf="@+id/pNumInput"
-        app:layout_constraintHorizontal_bias="0.803"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/uName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/uName"
+        app:layout_constraintTop_toBottomOf="@+id/uName" />
 </androidx.constraintlayout.widget.ConstraintLayout>
