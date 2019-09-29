@@ -1,12 +1,13 @@
 package com.example.telephonebook ;
 
+// ContactInfo Model
 public class ContactInfo {
 
     private int uID ;
     private String userName ;
     private String phoneNumber ;
 
-    // 負責設定使用者名稱、電話號碼
+    // Setting userName & userPhone
     public void init(int id, String name, String phone) {
 
         this.uID = id ;
@@ -14,17 +15,17 @@ public class ContactInfo {
         this.phoneNumber = phone ;
     }
 
-    // 讀取使用者ID
+    // Read userID
     public int GetUserID() {
         return this.uID ;
     }
 
-    // 讀取使用者名稱
+    // Read userName
     public String GetUserName() {
         return this.userName ;
     }
 
-    // 讀取使用者手機號碼
+    // Read userPhone
     public String GetPhoneNumber() {
         return this.phoneNumber ;
     }

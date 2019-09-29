@@ -15,19 +15,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private Context nowContext ;
 
-    // For 創建 Table 時的欄位名稱
+    // Columns for Creating Table
     private final String uID = "ID" ;
     private final String userName = "User" ;
     private final String phoneNum = "Phone" ;
 
-    // Database 名稱、版本
+    // Database name & version
     private static final String databaseName = "LocalDB" ;
     private static final int databaseVersion = 1 ;
 
-    // Table 名稱
+    // Table name
     private final String tableName = "TelephoneBook" ;
 
-    // 創建 Table 的 SQL 語法
+    // SQL Script for Creating Table
     // CREATE TABLE IF NOT EXISTS TelephoneBook ( ID INTEGER PRIMARY KEY AUTOINCREMENT, User VARCHAR(255), Phone VARCHAR(255) ) ;
     private final String createTableSQL = "CREATE TABLE IF NOT EXISTS " + this.tableName +
             " ( " + this.uID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -35,7 +35,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + this.phoneNum + " VARCHAR(255)" +
             " ) ; " ;
 
-    // 刪除 Table 的 SQL 語法
+    // SQL Script for Deleting Table
     // DROP TABLE IF EXISTS TelephoneBook ;
     private final String deleteTableSQL = "DROP TABLE IF EXISTS " + this.tableName + " ; " ;
 
@@ -53,7 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL(this.createTableSQL) ;
         } catch ( Exception e ) {
 
-            Toast.makeText(this.nowContext, "Create Table Fail -> " + e.toString(), Toast.LENGTH_LONG).show() ;
+            Toast.makeText(this.nowContext, "Create Table Fail :\n\n" + e.toString(), Toast.LENGTH_LONG).show() ;
         }
 
     }
@@ -66,7 +66,7 @@ public class DBHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL(this.deleteTableSQL) ;
         } catch ( Exception e ) {
 
-            Toast.makeText(this.nowContext, "Delete Table Fail -> " + e.toString(), Toast.LENGTH_LONG).show() ;
+            Toast.makeText(this.nowContext, "Delete Table Fail :\n\n" + e.toString(), Toast.LENGTH_LONG).show() ;
         }
     }
 
@@ -80,9 +80,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
         long nowID = myLocalDB.insert(this.tableName, null, contentValues) ;
 
-        // final 用法就如同 constant，無法再更改變數的值
-        final String successLog = "新增成功！" + "\n\n" + "編號 : " + nowID + "\n" +
-                                  "姓名 : " + name + "\n" + "電話 : " + phone ;
+        // The 「final」 property can make variables read-only
+        final String successLog = "Insert success！" + "\n\n" +
+                                  "Name : " + name + "\n" + "Phone : " + phone ;
 
         Toast.makeText(this.nowContext, successLog, Toast.LENGTH_LONG).show() ;
     }
@@ -97,17 +97,17 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String[] argu = { String.valueOf(id) } ;
 
-        // 回傳的值是「所影響Row」的數量
+        // The 「return value」 is the number of affected rows
         int affectRow = myLocalDB.update(this.tableName, contentValues, this.uID + " = ? ", argu) ;
 
         if (affectRow == 0) {
 
-            Toast.makeText(this.nowContext, "更新失敗，請重新再試！", Toast.LENGTH_LONG).show() ;
+            Toast.makeText(this.nowContext, "Update fail, please try again！", Toast.LENGTH_LONG).show() ;
         } else {
 
-            // final 用法就如同 constant，無法再更改變數的值
-            final String successLog = "更新成功！" + "\n\n" + "編號 : " + id + "\n" +
-                                      "姓名 : " + newName + "\n" + "電話 : " + newPhone ;
+            // The 「final」 property can make variables read-only
+            final String successLog = "Update success！" + "\n\n" +
+                                      "Name : " + newName + "\n" + "Phone : " + newPhone ;
 
             Toast.makeText(this.nowContext, successLog, Toast.LENGTH_LONG).show() ;
         }
@@ -119,19 +119,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String[] argu = { String.valueOf(id) } ;
 
-        // 回傳的值是「所影響Row」的數量
+        // The 「return value」 is the number of affected rows
         int affectRow = myLocalDB.delete(this.tableName, this.uID + " = ?", argu) ;
 
         if (affectRow == 0) {
 
-            Toast.makeText(this.nowContext, "刪除失敗，請重新再試！", Toast.LENGTH_LONG).show() ;
+            Toast.makeText(this.nowContext, "Delete fail, please try again！", Toast.LENGTH_LONG).show() ;
         } else {
 
-            Toast.makeText(this.nowContext, "刪除成功！", Toast.LENGTH_LONG).show() ;
+            Toast.makeText(this.nowContext, "Delete success！", Toast.LENGTH_LONG).show() ;
         }
     }
 
-    // 讀取 Local Database 的 Data Set
+    // Read the Data Set of this Local Database
     public ArrayList<ContactInfo> GetTotalContactInfo() {
 
         ArrayList<ContactInfo> totalContactInfo = new ArrayList<ContactInfo>() ;
@@ -139,7 +139,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase myLocalDB = this.getReadableDatabase() ;
         String[] myColumn = { this.uID, this.userName, this.phoneNum } ;
 
-        // 設定 Traversal
+        // Setting Database Traversal
         Cursor myCursor = myLocalDB.query(this.tableName, myColumn, null, null, null, null, null) ;
 
         while ( myCursor.moveToNext() ) {
@@ -147,11 +147,11 @@ public class DBHelper extends SQLiteOpenHelper {
             String name = myCursor.getString(myCursor.getColumnIndex(this.userName)) ;
             String phone = myCursor.getString(myCursor.getColumnIndex(this.phoneNum)) ;
 
-            // 每次進 While 都去讀取「一個人的所有資料」
+            // Read the eachContactInfo of Each Person at Each Time in Loop
             ContactInfo eachContactInfo = new ContactInfo() ;
             eachContactInfo.init(id, name, phone) ;
 
-            // 把「所有人」的 ContactInfo 都加到  TotalContactInfo 之中，來形成通訊錄
+            // Add Total eachContactInfo into totalContactInfo Which is a Telephone Book
             totalContactInfo.add(eachContactInfo) ;
         }
 

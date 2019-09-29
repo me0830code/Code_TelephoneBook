@@ -1,11 +1,11 @@
 <resources>
     <string name = "app_name" > TelephoneBook </string>
-    <string name = "userName" > 姓名 </string>
-    <string name = "userNameHint" > 請輸入姓名 </string>
-    <string name = "phoneNum" > 電話 </string>
-    <string name = "phoneNumHint" > 請輸入電話 </string>
+    <string name = "userName" > Name </string>
+    <string name = "userNameHint" > Please Enter Name ...</string>
+    <string name = "phoneNum" > Phone </string>
+    <string name = "phoneNumHint" > Please Enter Phone ...</string>
 
-    <string name = "insertButton" > 新增聯絡人 </string>
-    <string name = "updateButton" > 修改聯絡人 </string>
-    <string name = "deleteButton" > 刪除聯絡人 </string>
+    <string name = "insertButton" > Add User ContactInfo </string>
+    <string name = "updateButton" > Update User ContactInfo </string>
+    <string name = "deleteButton" > Delete User ContactInfo </string>
 </resources>

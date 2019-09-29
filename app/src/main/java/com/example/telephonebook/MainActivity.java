@@ -1,10 +1,13 @@
 package com.example.telephonebook ;
 
 import androidx.appcompat.app.AppCompatActivity ;
+
+import android.content.Context;
 import android.os.Bundle ;
 
 import android.view.View ;
 
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button ;
 import android.widget.EditText ;
@@ -15,43 +18,47 @@ import android.widget.ListView ;
 
 import java.util.ArrayList ;
 
-// Implements View.OnClickListener 是為了讓整個 MainActivity 去實作整個 onClick()
+// Implements View.OnClickListener can ask MainActivity to implement onClick() function
 //
-// 比起之前的寫法會更清楚知道每個Button所要實作的 Function 是什麼
+// Also, we can use switch case to handle each specific operation
 //
 // button.setOnClickListener(new View.OnClickListener() {
 //
 //      @Override
 //      public void onClick(View view) {
-//          this.Function() ;
+//          switch (view.getId()) {
+//              case ...
+//              case ...
+//          }
 //      }
 // });
 //
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    // 用來判斷現在是作何種動作
+    // Determine the Specific Operation
     private enum HandleType {
 
         Insert, Update, Delete
     }
 
-    // 用來記錄 Click 當下那筆資料的 uID，方便之後更新、刪除時使用
+    // Record the currentID of this Clicked Row
     private int nowUID = -1 ;
 
     // Dynamic Array
-    // 不同以往的 Array 需要宣告Size，在這邊類似於 Vector 的 Object
+    // Array Needs to Declare with Size, but ArrayList Don't
+    // ArrayList is Similar With Vector Object
 
-    // myTelephoneBook 是裝 Local Database 的 Data Set
+    // Using myTelephoneBook to Hold Data Set of Local Database
     private ArrayList<ContactInfo> myTelephoneBook = new ArrayList<ContactInfo>() ;
 
-    // totalListViewData 是放 ListView 所要使用的 Data Source
+    // Using totalListViewData to Hold Data Source of ListView
     private ArrayList<String> totalListViewData = new ArrayList<String>() ;
 
-    // ListView 裝 Data Source 的容器
+    // ArrayAdapter is the Container of ListView's Data Source
     private ArrayAdapter listAdapter ;
 
-    // 調用 LocalDB 來使用
+    // Call LocalDB to Use
     private DBHelper myDBHelper ;
 
     @Override
@@ -64,16 +71,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void SetInit() {
 
-        // 將 LocaDB 綁定 Context
+        // Let LocalDB Bind to Current Context
         this.myDBHelper = new DBHelper(this) ;
 
-        // 讀取 Local Database 的資料，即 Data Set
+        // Read Data Set of this Local Database
         this.myTelephoneBook.addAll(myDBHelper.GetTotalContactInfo()) ;
 
-        // 同時設定 ListView 所要使用的 Data Source
+        // Also, Setting the Data Source to ListView
         this.totalListViewData = this.GetTotalDataSource() ;
 
-        // Assign Function 給 Button
+        // Assign Function for Each Button
         Button insertButton = (Button) findViewById(R.id.insertButton) ;
         insertButton.setOnClickListener(this) ;
 
@@ -83,8 +90,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button deleteButton = (Button) findViewById(R.id.deleteButton) ;
         deleteButton.setOnClickListener(this) ;
 
-        // Constraint 要設定成 Match Constraints 才行
-        // Assign Function 給 ListView
+        // Constraint Needs to Set as Match Constraints
+
+        // Assign Function for ListView
         ListView personList = (ListView) findViewById(R.id.personList) ;
         personList.setOnItemClickListener(new ListView.OnItemClickListener() {
 
@@ -99,22 +107,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String name = personContactInfo.GetUserName() ;
                 String phone = personContactInfo.GetPhoneNumber() ;
 
-                // 帶入當前所 Click 的 Item 的資訊，包含 UserName 和 PhoneNumber
+                // Passing UserName & PhoneNumber of this Clicked Row in ListView
                 EditText nameInputEditText = (EditText) findViewById(R.id.uNameInput) ;
                 EditText phoneInputEditText = (EditText) findViewById(R.id.pNumInput) ;
 
                 nameInputEditText.setText(name);
                 phoneInputEditText.setText(phone);
 
-                // 設定當前所 Click 的 Item 的 uID
+                // Also, Setting the currentID of this Clicked Row
                 nowUID = uID ;
             }
         });
 
-        // 第三個參數是放ListView 要顯示的內容，即是 Data Source
+        // The Third Parameter is the Data Source(Showing Information) of ListView
         this.listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, this.totalListViewData) ;
 
-        // 設定 ListView 的 Data Source
+        // Setting ArrayAdapter(The Container of ListView's Data Source) to ListView
         personList.setAdapter(this.listAdapter) ;
     }
 
@@ -144,7 +152,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void HandleContactInfo(HandleType type) {
 
-        // 先綁定 EditText
+        // Close the Keyboard
+        DismissKeyboard() ;
+
+        // Binding Each EditText by Each R.id
         EditText nameInputEditText = (EditText) findViewById(R.id.uNameInput) ;
         EditText phoneInputEditText = (EditText) findViewById(R.id.pNumInput) ;
 
@@ -153,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if ( this.IsLeagalForOperation(personName, personPhoneNumber) ) {
 
-            // Handle 成功，清空兩個 Input
+            // Handle Operation Success
             nameInputEditText.setText("") ;
             phoneInputEditText.setText("") ;
 
@@ -178,20 +189,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
 
-            // 每次 Handle 完成後，更新 Data Set
+            // Update Data Set & Data Source When Operation Success
+
+            // Update Data Set
             this.myTelephoneBook.clear() ;
             this.myTelephoneBook.addAll(myDBHelper.GetTotalContactInfo()) ;
 
-            // 同時也更新 ListView 的 Data Source
+            // Update Data Source
             this.totalListViewData.clear() ;
             this.totalListViewData.addAll(this.GetTotalDataSource()) ;
 
-            // ListView 的 Adapter 作監聽，去看 Data Source 使否有變動
+            // Notify ArrayAdapter to Check Whether Data Source is Changed or Not
+            // If Yes, then System will Refresh ListView Automatically
             this.listAdapter.notifyDataSetChanged() ;
         } else {
 
-            Toast.makeText(this, "您的資料不完整，請重新再試！", Toast.LENGTH_LONG).show() ;
+            Toast.makeText(this, "Your information is not complete :(\nPlease try again！", Toast.LENGTH_LONG).show() ;
         }
+    }
+
+    private void DismissKeyboard() {
+
+        View view = this.getCurrentFocus() ;
+
+        if (view == null) { return ; }
+
+        InputMethodManager myKeyboard = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE) ;
+        myKeyboard.hideSoftInputFromWindow(view.getWindowToken(), 0) ;
     }
 
     private Boolean IsLeagalForOperation(String name, String phone) {
@@ -203,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true ;
     }
 
-    // 取得 ListView 所要用的 Data Source
+    // Get the Data Source of ListView
     private ArrayList<String> GetTotalDataSource() {
 
         ArrayList<String> totalListViewData = new ArrayList<String>() ;
@@ -212,9 +236,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             ContactInfo eachPersonContactInfo = this.myTelephoneBook.get(index) ;
 
-            String eachListViewData = "[" + eachPersonContactInfo.GetUserID() + "] " +
-                                      "姓名 : " + eachPersonContactInfo.GetUserName() + " " +
-                                      "電話 : " + eachPersonContactInfo.GetPhoneNumber() ;
+            String eachListViewData = "[No. " + (index + 1) + "]" + "\n" +
+                                      "Name : " + eachPersonContactInfo.GetUserName() + "\n" +
+                                      "Phone : " + eachPersonContactInfo.GetPhoneNumber() ;
 
             totalListViewData.add(eachListViewData) ;
         }
