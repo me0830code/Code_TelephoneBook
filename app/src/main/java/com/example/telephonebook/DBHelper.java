@@ -28,7 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String tableName = "TelephoneBook" ;
 
     // 創建 Table 的 SQL 語法
-    // CREATE TABLE IF NOT EXISTS ContactInfo ( ID INTEGER PRIMARY KEY AUTOINCREMENT, User VARCHAR(255), Phone VARCHAR(255) ) ;
+    // CREATE TABLE IF NOT EXISTS TelephoneBook ( ID INTEGER PRIMARY KEY AUTOINCREMENT, User VARCHAR(255), Phone VARCHAR(255) ) ;
     private final String createTableSQL = "CREATE TABLE IF NOT EXISTS " + this.tableName +
             " ( " + this.uID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + this.userName + " VARCHAR(255), "
@@ -36,7 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
             " ) ; " ;
 
     // 刪除 Table 的 SQL 語法
-    // DROP TABLE IF EXISTS ContactInfo ;
+    // DROP TABLE IF EXISTS TelephoneBook ;
     private final String deleteTableSQL = "DROP TABLE IF EXISTS " + this.tableName + " ; " ;
 
     public DBHelper(Context context) {
