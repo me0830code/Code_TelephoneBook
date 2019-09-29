@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.myTelephoneBook.addAll(myDBHelper.GetTotalContactInfo()) ;
 
         // 同時設定 ListView 所要使用的 Data Source
-        this.totalListViewData = this.GetTotalListViewData() ;
+        this.totalListViewData = this.GetTotalDataSource() ;
 
         // Assign Function 給 Button
         Button insertButton = (Button) findViewById(R.id.insertButton) ;
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // 同時也更新 ListView 的 Data Source
             this.totalListViewData.clear() ;
-            this.totalListViewData.addAll(this.GetTotalListViewData()) ;
+            this.totalListViewData.addAll(this.GetTotalDataSource()) ;
 
             // ListView 的 Adapter 作監聽，去看 Data Source 使否有變動
             this.listAdapter.notifyDataSetChanged() ;
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // 取得 ListView 所要用的 Data Source
-    private ArrayList<String> GetTotalListViewData() {
+    private ArrayList<String> GetTotalDataSource() {
 
         ArrayList<String> totalListViewData = new ArrayList<String>() ;
 
