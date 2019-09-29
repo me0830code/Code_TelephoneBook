@@ -39,28 +39,14 @@ public class DBHelper extends SQLiteOpenHelper {
     // DROP TABLE IF EXISTS ContactInfo ;
     private final String deleteTableSQL = "DROP TABLE IF EXISTS " + this.tableName + " ; " ;
 
-//    private static final String DATABASE_NAME = "myDatabase";    // Database Name
-//    private static final String TABLE_NAME = "myTable";   // Table Name
-//    private static final int DATABASE_Version = 1;.    // Database Version
-//    private static final String UID="_id";     // Column I (Primary Key)
-//    private static final String NAME = "Name";    //Column II
-//    private static final String MyPASSWORD= "Password";    // Column III
-//    private static final String CREATE_TABLE = "CREATE TABLE "+TABLE_NAME+
-//            " ("+UID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+NAME+" VARCHAR(255) ,"+ MyPASSWORD+" VARCHAR(225));";
-//    private static final String DROP_TABLE ="DROP TABLE IF EXISTS "+TABLE_NAME;
-//    private Context context;
-
-
     public DBHelper(Context context) {
         super(context, databaseName, null, databaseVersion) ;
 
         this.nowContext = context ;
-//        this.myLocalDB = new DBHelper(this.nowContext).getWritableDatabase() ;
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-//        super.onCreate(sqLiteDatabase)  ;
 
         try {
 
@@ -74,13 +60,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-//        super.onUpgrade(sqLiteDatabase, i, i1) ;
-
 
         try {
 
             sqLiteDatabase.execSQL(this.deleteTableSQL) ;
-//            onCreate(sqLiteDatabase);
         } catch ( Exception e ) {
 
             Toast.makeText(this.nowContext, "Delete Table Fail -> " + e.toString(), Toast.LENGTH_LONG).show() ;
@@ -88,6 +71,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void InsertToLocalDB(String name, String phone) {
+
         SQLiteDatabase myLocalDB = new DBHelper(this.nowContext).getWritableDatabase() ;
 
         ContentValues contentValues = new ContentValues() ;
@@ -97,84 +81,65 @@ public class DBHelper extends SQLiteOpenHelper {
         long nowID = myLocalDB.insert(this.tableName, null, contentValues) ;
 
         // final 用法就如同 constant，無法再更改變數的值
-        final String successLog = "新增成功！" + "\n\n" + "編號 : " + nowID + "\n" + "姓名 : " + name + "\n" + "電話 : " + phone ;
+        final String successLog = "新增成功！" + "\n\n" + "編號 : " + nowID + "\n" +
+                                  "姓名 : " + name + "\n" + "電話 : " + phone ;
+
         Toast.makeText(this.nowContext, successLog, Toast.LENGTH_LONG).show() ;
     }
 
     public void UpdateToLocalDB(int id, String newName, String newPhone) {
 
-        Toast.makeText(this.nowContext, "??? -> ", Toast.LENGTH_LONG).show() ;
-
         SQLiteDatabase myLocalDB = new DBHelper(this.nowContext).getWritableDatabase() ;
-
-//        id = 1 ;
-
-//        SQLiteDatabase db = myhelper.getWritableDatabase();
-////        ContentValues contentValues = new ContentValues();
-////        contentValues.put(myDbHelper.NAME,newName);
-////        String[] whereArgs= {oldName};
-////        int count =db.update(myDbHelper.TABLE_NAME,contentValues, myDbHelper.NAME+" = ?",whereArgs );
-////        return count;
 
         ContentValues contentValues = new ContentValues() ;
         contentValues.put(this.userName, newName) ;
         contentValues.put(this.phoneNum, newPhone) ;
 
-        // The Third param of db.update() should be the where clause only, and the fourth is the actual condition values
-        //You would need to put quotes around your Id.
-        // Something like: String strFilter = "_id='" + Id + "'"; – Guillaume Jun 22 '16 at 17:27
-
         String[] argu = { String.valueOf(id) } ;
-        int temp = myLocalDB.update(this.tableName, contentValues, this.uID + " = ? ", argu) ;
-//        int temp = myLocalDB.update(this.tableName, contentValues, this.uID + " = " + String.valueOf(uID), null) ;
-//
-        final String successLog = "修改成功！" + "\n\n" + "編號 : " + uID + "\n" + "姓名 : " + newName + "\n" + "電話 : " + newPhone ;
-//        Toast.makeText(this.nowContext, successLog, Toast.LENGTH_LONG).show() ;
 
-        Toast.makeText(this.nowContext, "??? -> " + temp, Toast.LENGTH_LONG).show() ;
+        // 回傳的值是「所影響Row」的數量
+        int affectRow = myLocalDB.update(this.tableName, contentValues, this.uID + " = ? ", argu) ;
+
+        if (affectRow == 0) {
+
+            Toast.makeText(this.nowContext, "更新失敗，請重新再試！", Toast.LENGTH_LONG).show() ;
+        } else {
+
+            // final 用法就如同 constant，無法再更改變數的值
+            final String successLog = "更新成功！" + "\n\n" + "編號 : " + id + "\n" +
+                                      "姓名 : " + newName + "\n" + "電話 : " + newPhone ;
+
+            Toast.makeText(this.nowContext, successLog, Toast.LENGTH_LONG).show() ;
+        }
     }
 
     public void DeleteFromLocalDB(int id) {
+
         SQLiteDatabase myLocalDB = new DBHelper(this.nowContext).getWritableDatabase() ;
 
-        String[] argu = { String.valueOf(this.uID) } ;
+        String[] argu = { String.valueOf(id) } ;
 
-//        int temp = myLocalDB.delete(this.tableName, this.uID + " = ?", argu) ;
-        int temp = myLocalDB.delete(this.tableName, this.uID + " = ?", new String[] { String.valueOf(id) }) ;
+        // 回傳的值是「所影響Row」的數量
+        int affectRow = myLocalDB.delete(this.tableName, this.uID + " = ?", argu) ;
 
-//        myLocalDB.execSQL(("DELETE FROM "+ this.tableName +" WHERE "+ this.uID + " = ' " + String.valueOf(id) + " '"));
+        if (affectRow == 0) {
 
-        Toast.makeText(this.nowContext, "??? -> " + temp, Toast.LENGTH_LONG).show() ;
+            Toast.makeText(this.nowContext, "刪除失敗，請重新再試！", Toast.LENGTH_LONG).show() ;
+        } else {
 
-//        SQLiteDatabase db = myhelper.getWritableDatabase();
-//        String[] whereArgs ={uname};
-//
-//        int count =db.delete(myDbHelper.TABLE_NAME ,myDbHelper.NAME+" = ?",whereArgs);
-//        return  count;
+            Toast.makeText(this.nowContext, "刪除成功！", Toast.LENGTH_LONG).show() ;
+        }
     }
 
-    public ArrayList<String> GetContactInfo() {
+    // 讀取 Local Database 的 Data Set
+    public ArrayList<ContactInfo> GetTotalContactInfo() {
 
-
-
-//        SQLiteDatabase db = myhelper.getWritableDatabase();
-//        String[] columns = {myDbHelper.UID,myDbHelper.NAME,myDbHelper.MyPASSWORD};
-//        Cursor cursor =db.query(myDbHelper.TABLE_NAME,columns,null,null,null,null,null);
-//        StringBuffer buffer= new StringBuffer();
-//        while (cursor.moveToNext())
-//        {
-//            int cid =cursor.getInt(cursor.getColumnIndex(myDbHelper.UID));
-//            String name =cursor.getString(cursor.getColumnIndex(myDbHelper.NAME));
-//            String  password =cursor.getString(cursor.getColumnIndex(myDbHelper.MyPASSWORD));
-//            buffer.append(cid+ "   " + name + "   " + password +" \n");
-//        }
-//        return buffer.toString();
-
-        ArrayList<String> TotalContactInfo = new ArrayList<String>() ;
+        ArrayList<ContactInfo> totalContactInfo = new ArrayList<ContactInfo>() ;
 
         SQLiteDatabase myLocalDB = new DBHelper(this.nowContext).getReadableDatabase() ;
         String[] myColumn = { this.uID, this.userName, this.phoneNum } ;
 
+        // 設定 Traversal
         Cursor myCursor = myLocalDB.query(this.tableName, myColumn, null, null, null, null, null) ;
 
         while ( myCursor.moveToNext() ) {
@@ -182,11 +147,15 @@ public class DBHelper extends SQLiteOpenHelper {
             String name = myCursor.getString(myCursor.getColumnIndex(this.userName)) ;
             String phone = myCursor.getString(myCursor.getColumnIndex(this.phoneNum)) ;
 
-            TotalContactInfo.add( "[" + String.valueOf(id) + "] " + "姓名 : " + name + " 電話 : " + phone) ;
+            // 每次進 While 都去讀取「一個人的所有資料」
+            ContactInfo eachContactInfo = new ContactInfo() ;
+            eachContactInfo.init(id, name, phone) ;
+
+            // 把「所有人」的 ContactInfo 都加到  TotalContactInfo 之中，來形成通訊錄
+            totalContactInfo.add(eachContactInfo) ;
         }
 
-        return TotalContactInfo ;
-    }
-
+        return totalContactInfo ;
+     }
 }
 
