@@ -72,7 +72,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void InsertToLocalDB(String name, String phone) {
 
-        SQLiteDatabase myLocalDB = new DBHelper(this.nowContext).getWritableDatabase() ;
+        SQLiteDatabase myLocalDB = this.getWritableDatabase() ;
 
         ContentValues contentValues = new ContentValues() ;
         contentValues.put(this.userName, name) ;
@@ -89,7 +89,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void UpdateToLocalDB(int id, String newName, String newPhone) {
 
-        SQLiteDatabase myLocalDB = new DBHelper(this.nowContext).getWritableDatabase() ;
+        SQLiteDatabase myLocalDB = this.getWritableDatabase() ;
 
         ContentValues contentValues = new ContentValues() ;
         contentValues.put(this.userName, newName) ;
@@ -115,7 +115,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void DeleteFromLocalDB(int id) {
 
-        SQLiteDatabase myLocalDB = new DBHelper(this.nowContext).getWritableDatabase() ;
+        SQLiteDatabase myLocalDB = this.getWritableDatabase() ;
 
         String[] argu = { String.valueOf(id) } ;
 
@@ -136,7 +136,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         ArrayList<ContactInfo> totalContactInfo = new ArrayList<ContactInfo>() ;
 
-        SQLiteDatabase myLocalDB = new DBHelper(this.nowContext).getReadableDatabase() ;
+        SQLiteDatabase myLocalDB = this.getReadableDatabase() ;
         String[] myColumn = { this.uID, this.userName, this.phoneNum } ;
 
         // 設定 Traversal
