@@ -24,7 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String databaseName = "LocalDB" ;
     private static final int databaseVersion = 1 ;
 
-    // Table name
+    // Table Name
     private final String tableName = "TelephoneBook" ;
 
     // SQL Script for Creating Table

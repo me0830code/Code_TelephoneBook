@@ -7,7 +7,7 @@ public class ContactInfo {
     private String userName ;
     private String phoneNumber ;
 
-    // Setting userName & userPhone
+    // Setting uID & userName & userPhone
     public void init(int id, String name, String phone) {
 
         this.uID = id ;
