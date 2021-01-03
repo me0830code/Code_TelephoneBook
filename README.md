@@ -11,15 +11,15 @@ Tutorial Project for Android Class at National Cheng Kung University - Computer 
 # Demo
 Insert Contact Info
 
-![](http://i.imgur.com/u8NMPev.gif)
+![](https://i.imgur.com/u8NMPev.gif)
 
 Update Contact Info
 
-![](http://i.imgur.com/CI1pUnB.gif)
+![](https://i.imgur.com/CI1pUnB.gif)
 
 Delete Contact Info
 
-![](http://i.imgur.com/skqqsFm.gif)
+![](https://i.imgur.com/skqqsFm.gif)
 
 # Contacts
 Chien-Yu Yeh
