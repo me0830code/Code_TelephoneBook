@@ -2,7 +2,7 @@
 Date : 108 / 11 / 29
 
 # Motivation & Purpose
-Tutorial Project for Android Class at National Cheng Kung University - Computer Science Department
+Tutorial Project - Android Class at National Cheng Kung University, Computer Science Department
 
 1. MVC Design Pattern
 2. SQLite
